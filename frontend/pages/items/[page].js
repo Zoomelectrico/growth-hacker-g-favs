@@ -22,7 +22,7 @@ const selectQuery = key => {
 
 const ItemsList = () => {
   const router = useRouter();
-  const { currentSource } = React.useContext(AppContext);
+  const { currentSource, user } = React.useContext(AppContext);
   const { data, loading, error } = useQuery(selectQuery(currentSource.key), {
     variables: {
       page: Number(router.query.page),
@@ -42,7 +42,7 @@ const ItemsList = () => {
     return <pre>{JSON.stringify(error, null, 2)}</pre>;
   }
   const [key] = Object.keys(data);
-  return <Items {...data[key]} title={currentSource.name} page={Number(router.query.page)} />;
+  return <Items {...data[key]} title={currentSource.name} page={Number(router.query.page)} auth={!!user} />;
 };
 
 export default withApollo(ItemsList);

@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import MyNavbar from './Navbar';
 import AppContext from '../AppContext';
+import { endpoint } from '../config';
 
 const Layout = ({ children }) => {
-  const [user, setUser] = React.useState({});
+  const [user, setUser] = React.useState(null);
   const [sources, setSources] = React.useState([]);
   const [currentSource, setCurrentSource] = React.useState({});
   const [token, setToken] = React.useState('');
@@ -14,6 +16,19 @@ const Layout = ({ children }) => {
       const _currentSource = JSON.parse(localStorage.getItem('g-fav-source'));
       setCurrentSource(_currentSource);
     }
+  }, []);
+  React.useEffect(() => {
+    const fetcher = async () => {
+      const { data } = await axios.get(`${endpoint}/me`, {
+        withCredentials: true,
+      });
+      if (!data.success) {
+        return console.log(`err: ${data.err}`);
+      }
+      setToken(data.token);
+      setUser(data.user);
+    };
+    fetcher();
   }, []);
   return (
     <>
@@ -29,7 +44,7 @@ const Layout = ({ children }) => {
           setCurrentSource,
         }}
       >
-        <MyNavbar />
+        <MyNavbar isLoggedIn={!!user} />
         {children}
       </AppContext.Provider>
     </>

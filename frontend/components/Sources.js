@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Illustration from '../public/ill-1.svg';
 
 const Source = ({ sources, changeSource }) => {
   const onChange = e => {
@@ -9,12 +10,14 @@ const Source = ({ sources, changeSource }) => {
     changeSource(sources.filter(({ key }) => key === value)[0]);
   };
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12 col-lg-7">{/*  */}</div>
-        <div className="col-12 col-lg-5">
-          <h2 className="text-center text-uppercase">select yours favorites</h2>
-          <div className="form-group">
+    <div className="container py-5">
+      <div className="row h-100 w-100" style={{ minHeight: '90vh' }}>
+        <div className="col-12 col-lg-7">
+
+        </div>
+        <div className="col-12 col-lg-5 d-flex flex-column">
+          <h2 className="text-center text-uppercase mt-auto">select yours favorites</h2>
+          <div className="form-group mb-auto">
             <label htmlFor="favs" className="sr-only">
               Favorites
             </label>

@@ -27,7 +27,7 @@ const SignIn = () => {
     }
     setToken(data.token);
     setUser(data.user);
-    router.push('/users/[slug]', `/user/${data.user.slug}`);
+    router.push('/users/favorites');
   };
 
   return (
@@ -66,7 +66,7 @@ const SignIn = () => {
                 </div>
                 <div className="d-flex justify-content-center">
                   <button className="btn btn-primary" type="submit">
-                    Sign Up
+                    Sign In
                   </button>
                 </div>
               </form>

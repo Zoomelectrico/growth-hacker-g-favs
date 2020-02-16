@@ -1,3 +1,4 @@
+export { default as Filter } from './Filter';
 export { default as Item } from './Item';
 export { default as Items } from './Items';
 export { default as Layout } from './Layout';

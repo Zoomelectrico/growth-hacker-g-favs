@@ -31,7 +31,7 @@ const SignUp = () => {
       }
       setToken(data.token);
       setUser(data.user);
-      router.push('/users/[slug]', `/user/${data.user.slug}`);
+      router.push('/users/favorites');
     } else {
       console.log({ password, rePassword });
     }

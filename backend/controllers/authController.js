@@ -74,4 +74,29 @@ const signOut = async (req, res) => {
   }
 };
 
-module.exports = { createUser, signIn, signOut };
+const getCurrentUser = async (req, res) => {
+  try {
+    if (!req.cookies.token) {
+      return res.status(200).json({ success: false, err: 'No one is logged in' });
+    }
+    const payload = jwt.decode(req.cookies.token);
+    const user = await User.findById(payload.id);
+    if (!user) {
+      return res.status(500).json({ success: false, err: 'There is an issue with the DB' });
+    }
+    delete user.password;
+    return res.status(200).json({
+      success: true,
+      token: req.cookies.token,
+      user: {
+        email: user.email,
+        name: user.name,
+        slug: user.slug,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, err: err.message });
+  }
+};
+
+module.exports = { createUser, signIn, signOut, getCurrentUser };

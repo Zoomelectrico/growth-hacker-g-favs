@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Item from './Item';
 import Filter from './Filter';
 
-const Items = ({ items, title, count, pageInfo, page }) => (
+const Items = ({ items, title, count, pageInfo, page, link, auth }) => (
   <div className="container py-5">
     <div className="row">
       <div className="col-12">
@@ -17,10 +17,10 @@ const Items = ({ items, title, count, pageInfo, page }) => (
         <Filter type={String(title).toLowerCase()} />
       </div>
       <div className="col-12 col-lg-9">
-        <div className="row justify-content-center">
+        <div className="row">
           {items.map(item => (
-            <div className="col-10 col-md-8 col-lg-4 mb-3" key={item._id}>
-              <Item {...item} canLike />
+            <div className="col-10 col-md-8 col-lg-4 mb-3 offset-1 offset-md-2 offset-lg-0" key={item._id}>
+              <Item {...item} canLike={auth} />
             </div>
           ))}
         </div>
@@ -32,7 +32,7 @@ const Items = ({ items, title, count, pageInfo, page }) => (
           <ul className="pagination">
             <li className={`${!pageInfo.hasPreviousPage ? 'disabled' : ''} page-item`}>
               {pageInfo.hasPreviousPage ? (
-                <Link href="/items/[page]" as={`/items/${page - 1}`}>
+                <Link href={`/${link}/[page]`} as={`/${link}/${page + 1}`}>
                   <a className="page-link">Previous</a>
                 </Link>
               ) : (
@@ -44,7 +44,7 @@ const Items = ({ items, title, count, pageInfo, page }) => (
             </li>
             <li className={`${!pageInfo.hasNextPage ? 'disabled' : ''} page-item`}>
               {pageInfo.hasNextPage ? (
-                <Link href="/items/[page]" as={`/items/${page + 1}`}>
+                <Link href={`/${link}/[page]`} as={`/${link}/${page + 1}`}>
                   <a className="page-link">Next</a>
                 </Link>
               ) : (
@@ -64,6 +64,12 @@ Items.propTypes = {
   pageInfo: PropTypes.object.isRequired,
   count: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
+  link: PropTypes.string,
+  auth: PropTypes.bool.isRequired,
+};
+
+Items.defaultProps = {
+  link: 'items',
 };
 
 export default Items;
