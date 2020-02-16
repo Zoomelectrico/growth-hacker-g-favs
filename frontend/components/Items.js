@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Item from './Item';
 import Filter from './Filter';
 
-const Items = ({ items, title, count, pageInfo, page, link, auth }) => (
+const Items = ({ items, title, count, pageInfo, page, link, auth, add, remove }) => (
   <div className="container py-5">
     <div className="row">
       <div className="col-12">
@@ -20,7 +20,7 @@ const Items = ({ items, title, count, pageInfo, page, link, auth }) => (
         <div className="row">
           {items.map(item => (
             <div className="col-10 col-md-8 col-lg-4 mb-3 offset-1 offset-md-2 offset-lg-0" key={item._id}>
-              <Item {...item} canLike={auth} />
+              <Item {...item} canLike={auth} add={add} remove={remove} />
             </div>
           ))}
         </div>
@@ -32,7 +32,7 @@ const Items = ({ items, title, count, pageInfo, page, link, auth }) => (
           <ul className="pagination">
             <li className={`${!pageInfo.hasPreviousPage ? 'disabled' : ''} page-item`}>
               {pageInfo.hasPreviousPage ? (
-                <Link href={`/${link}/[page]`} as={`/${link}/${page + 1}`}>
+                <Link href={`/${link}/[page]`} as={`/${link}/${page - 1}`}>
                   <a className="page-link">Previous</a>
                 </Link>
               ) : (
@@ -66,6 +66,8 @@ Items.propTypes = {
   page: PropTypes.number.isRequired,
   link: PropTypes.string,
   auth: PropTypes.bool.isRequired,
+  add: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
 };
 
 Items.defaultProps = {

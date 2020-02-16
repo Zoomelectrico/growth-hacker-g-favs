@@ -14,7 +14,6 @@ const Home = ({ success, sources }) => {
       setSources(sources);
     }
     if (localStorage.getItem('g-fav-source')) {
-      router.push('/items');
       const _currentSource = JSON.parse(localStorage.getItem('g-fav-source'));
       setCurrentSource(_currentSource);
       return () => {}; //* No React Error

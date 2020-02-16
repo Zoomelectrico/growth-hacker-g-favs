@@ -88,7 +88,7 @@ export const GET_FIELDS = gql`
         name
       }
     }
-    schoe: __type(name: "Shoe") {
+    shoe: __type(name: "Shoe") {
       fields {
         name
       }

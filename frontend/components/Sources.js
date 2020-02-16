@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Illustration from '../public/ill-1.svg';
 
 const Source = ({ sources, changeSource }) => {
   const onChange = e => {
@@ -13,7 +12,7 @@ const Source = ({ sources, changeSource }) => {
     <div className="container py-5">
       <div className="row h-100 w-100" style={{ minHeight: '90vh' }}>
         <div className="col-12 col-lg-7">
-
+          <img className="w-100" src="/ill-1.svg" alt="illustration" />
         </div>
         <div className="col-12 col-lg-5 d-flex flex-column">
           <h2 className="text-center text-uppercase mt-auto">select yours favorites</h2>

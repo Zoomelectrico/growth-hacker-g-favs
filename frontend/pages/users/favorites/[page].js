@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import withApollo from '../../../lib/withData';
 import { endpoint, perPage } from '../../../config';
+import { ADD_TO_FAVORITES, DELETE_FROM_FAVORITES } from '../../../graphql/mutations';
 import { Items } from '../../../components';
 import AppContext from '../../../AppContext';
 
@@ -14,6 +16,34 @@ const Favorites = ({ success, favorites }) => {
   const [hasPreviousPage, setHasPreviousPage] = React.useState(false);
   const [hasNextPage, setHasNextPage] = React.useState(false);
   const [items, setItems] = React.useState([]);
+  const [addToFavorites] = useMutation(ADD_TO_FAVORITES);
+  const [deleteFromFavorites] = useMutation(DELETE_FROM_FAVORITES);
+  const addFav = async (e, userId, favoriteId) => {
+    try {
+      e.preventDefault();
+      const { data: addData } = await addToFavorites({ variables: { userId, favoriteId } });
+      if (!addData.addToFavorites.success) {
+        console.log(addData);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const removeFav = async (e, userId, favoriteId) => {
+    try {
+      e.preventDefault();
+      const { data: removeData } = await deleteFromFavorites({ variables: { userId, favoriteId } });
+      if (!removeData.deleteFromFavorites.success) {
+        console.log(removeData);
+      }
+      const page = Number(router.query.page);
+      const start = perPage * (page - 1);
+      const end = start + perPage;
+      setItems(favorites.filter(({ _id }) => _id !== favoriteId).slice(start, end));
+    } catch (err) {
+      console.log(err);
+    }
+  };
   React.useState(() => {
     const page = Number(router.query.page);
     if (totalPages === 1) {
@@ -48,11 +78,16 @@ const Favorites = ({ success, favorites }) => {
   return (
     <Items
       title="Favorites"
-      items={items}
+      items={items.map(item => {
+        item.isLiked = true;
+        return item;
+      })}
       page={Number(router.query.page)}
       count={favorites.length}
       auth={!!user}
       link="users/favorites"
+      add={addFav}
+      remove={removeFav}
       pageInfo={{
         hasPreviousPage,
         hasNextPage,

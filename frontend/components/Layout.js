@@ -12,11 +12,21 @@ const Layout = ({ children }) => {
   const [token, setToken] = React.useState('');
   React.useEffect(() => {
     if (localStorage.getItem('g-fav-source')) {
-      console.log(localStorage.getItem('g-fav-source'));
       const _currentSource = JSON.parse(localStorage.getItem('g-fav-source'));
       setCurrentSource(_currentSource);
     }
   }, []);
+  React.useEffect(() => {
+    if (localStorage.getItem('g-fav-sources')) {
+      const _sources = JSON.parse(localStorage.getItem('g-fav-sources'));
+      setSources(_sources);
+    }
+  }, []);
+  React.useEffect(() => {
+    if (currentSource) {
+      localStorage.setItem('g-fav-source', JSON.stringify(currentSource));
+    }
+  }, [currentSource]);
   React.useEffect(() => {
     const fetcher = async () => {
       const { data } = await axios.get(`${endpoint}/me`, {

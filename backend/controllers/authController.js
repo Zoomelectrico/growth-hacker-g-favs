@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = mongoose.model('User');
+const Computer = mongoose.model('Computer');
+const Shoe = mongoose.model('Shoe');
+const Vehicle = mongoose.model('Vehicle');
 
 const createUser = async (req, res) => {
   try {
@@ -16,13 +19,21 @@ const createUser = async (req, res) => {
       maxAge: 365 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
-    res.status(200).json({
+    const [computers, shoes, vehicles] = await Promise.all([
+      Computer.find({ _id: { $in: user.favorites } }).populate('brand'),
+      Shoe.find({ _id: { $in: user.favorites } }).populate('brand'),
+      Vehicle.find({ _id: { $in: user.favorites } }).populate('brand'),
+    ]);
+    const favorites = [...computers, ...shoes, ...vehicles].filter(fav => !!fav);
+    return res.status(200).json({
       success: true,
       token,
       user: {
-        name: user.name,
+        _id: user._id,
         email: user.email,
+        name: user.name,
         slug: user.slug,
+        favorites,
       },
     });
   } catch (err) {
@@ -46,13 +57,21 @@ const signIn = async (req, res) => {
       maxAge: 365 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
-    res.status(200).json({
+    const [computers, shoes, vehicles] = await Promise.all([
+      Computer.find({ _id: { $in: user.favorites } }).populate('brand'),
+      Shoe.find({ _id: { $in: user.favorites } }).populate('brand'),
+      Vehicle.find({ _id: { $in: user.favorites } }).populate('brand'),
+    ]);
+    const favorites = [...computers, ...shoes, ...vehicles].filter(fav => !!fav);
+    return res.status(200).json({
       success: true,
       token,
       user: {
-        name: user.name,
+        _id: user._id,
         email: user.email,
+        name: user.name,
         slug: user.slug,
+        favorites,
       },
     });
   } catch (err) {
@@ -84,14 +103,21 @@ const getCurrentUser = async (req, res) => {
     if (!user) {
       return res.status(500).json({ success: false, err: 'There is an issue with the DB' });
     }
-    delete user.password;
+    const [computers, shoes, vehicles] = await Promise.all([
+      Computer.find({ _id: { $in: user.favorites } }).populate('brand'),
+      Shoe.find({ _id: { $in: user.favorites } }).populate('brand'),
+      Vehicle.find({ _id: { $in: user.favorites } }).populate('brand'),
+    ]);
+    const favorites = [...computers, ...shoes, ...vehicles].filter(fav => !!fav);
     return res.status(200).json({
       success: true,
       token: req.cookies.token,
       user: {
+        _id: user._id,
         email: user.email,
         name: user.name,
         slug: user.slug,
+        favorites,
       },
     });
   } catch (err) {

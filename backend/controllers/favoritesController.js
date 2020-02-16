@@ -9,13 +9,11 @@ const Vehicle = mongoose.model('Vehicle');
 const getFavorites = async (req, res) => {
   try {
     if (!req.cookies.token) {
-      console.log(1);
       return res.status(500).json({ success: false, err: 'No one is logged in!' });
     }
     const payload = jwt.decode(req.cookies.token);
     const user = await User.findById(payload.id);
     if (!user) {
-      console.log(2);
       return res.status(500).json({ success: false, err: 'No one is logged in!' });
     }
     const [computers, shoes, vehicles] = await Promise.all([

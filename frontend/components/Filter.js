@@ -22,7 +22,11 @@ const Filter = ({ type }) => {
       const keys = Object.keys(data);
       keys.forEach(key => {
         if (type.includes(key)) {
-          setFields(data[key].fields.map(({ name }) => ({ name, id: uuid() })).filter(x => x.name !== '_id'));
+          setFields(
+            data[key].fields
+              .map(({ name }) => ({ name, id: uuid() }))
+              .filter(x => x.name !== '_id' && x.name !== 'photo')
+          );
         }
       });
     }

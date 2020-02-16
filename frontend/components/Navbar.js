@@ -2,11 +2,29 @@ import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from 'reactstrap';
+import AppContext from '../AppContext';
 
 const MyNavbar = ({ isLoggedIn }) => {
+  const { sources, currentSource, setCurrentSource } = React.useContext(AppContext);
+  const [_sources, setSources] = React.useState([]);
+  const [_currentSource, _setCurrentSource] = React.useState({});
   const [isOpen, setIsOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    setSources(sources);
+  }, [sources]);
+
+  React.useEffect(() => {
+    _setCurrentSource(currentSource);
+  }, [currentSource]);
+
   const toggle = () => setIsOpen(!isOpen);
+
+  const onChange = e => {
+    e.preventDefault();
+    const { value } = e.target;
+    setCurrentSource(_sources.filter(({ key }) => key === value)[0]);
+  };
 
   return (
     <div>
@@ -27,11 +45,31 @@ const MyNavbar = ({ isLoggedIn }) => {
                 <a className="nav-link">Items</a>
               </Link>
             </NavItem>
+            <NavItem>
+              <div className="form-inline mr-2">
+                <select
+                  name="source"
+                  id="source"
+                  className="form-control border-0 bg-transparent"
+                  value={(_currentSource && _currentSource.key) || 'none'}
+                  onChange={onChange}
+                >
+                  <option disabled value="none">
+                    Select a source
+                  </option>
+                  {_sources.map(source => (
+                    <option key={source.key} value={source.key}>
+                      {source.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </NavItem>
             {!isLoggedIn ? (
               <>
                 <NavItem>
                   <Link href="/sign-up">
-                    <a className="btn btn-primary nav-link">Sign Up</a>
+                    <a className="btn btn-primary nav-link text-white">Sign Up</a>
                   </Link>
                 </NavItem>
                 <NavItem>
