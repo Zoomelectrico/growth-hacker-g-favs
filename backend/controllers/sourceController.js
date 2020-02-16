@@ -15,15 +15,6 @@ const getSources = (req, res) => {
       name: 'Shoes',
       type: 'graphql',
     },
-    {
-      key: 'candies',
-      name: 'Candies',
-      type: 'rest',
-      endpoints: {
-        one: 'http://locahost:3000/candy/:id',
-        many: 'http://locahost:3000/candies',
-      },
-    },
   ];
   res.status(200).json({
     success: true,
