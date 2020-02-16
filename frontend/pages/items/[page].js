@@ -24,6 +24,10 @@ const selectQuery = key => {
 const ItemsList = () => {
   const router = useRouter();
   const { currentSource, user } = React.useContext(AppContext);
+  const [_user, setUser] = React.useState({});
+  React.useEffect(() => {
+    setUser(user);
+  }, [user]);
   const { data, loading, error } = useQuery(selectQuery(currentSource.key), {
     variables: {
       page: Number(router.query.page),
@@ -69,7 +73,8 @@ const ItemsList = () => {
       {...data[key]}
       title={currentSource.name}
       page={Number(router.query.page)}
-      auth={!!user}
+      auth={!!_user}
+      fav={(_user && _user.favorites) || []}
       add={addFav}
       remove={removeFav}
     />

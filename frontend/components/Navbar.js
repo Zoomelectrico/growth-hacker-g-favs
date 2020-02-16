@@ -1,11 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from 'reactstrap';
 import AppContext from '../AppContext';
+import { endpoint } from '../config';
 
 const MyNavbar = ({ isLoggedIn }) => {
-  const { sources, currentSource, setCurrentSource } = React.useContext(AppContext);
+  const router = useRouter();
+  const { sources, currentSource, setCurrentSource, setUser, setToken } = React.useContext(AppContext);
   const [_sources, setSources] = React.useState([]);
   const [_currentSource, _setCurrentSource] = React.useState({});
   const [isOpen, setIsOpen] = React.useState(false);
@@ -26,9 +30,22 @@ const MyNavbar = ({ isLoggedIn }) => {
     setCurrentSource(_sources.filter(({ key }) => key === value)[0]);
   };
 
+  const signOut = async e => {
+    e.preventDefault();
+    const {
+      data: { success, err },
+    } = await axios.post(`${endpoint}/sign-out`, {}, { withCredentials: true });
+    if (!success) {
+      console.log(err);
+    }
+    setUser(null);
+    setToken('');
+    router.push('/');
+  };
+
   return (
     <div>
-      <Navbar color="light" light expand="lg">
+      <Navbar color="white" light expand="lg" className="py-3 border-bottom">
         <Link href="/">
           <a className="navbar-brand">G Fav</a>
         </Link>
@@ -80,7 +97,7 @@ const MyNavbar = ({ isLoggedIn }) => {
               </>
             ) : (
               <NavItem>
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={signOut}>
                   Sign Out
                 </button>
               </NavItem>
