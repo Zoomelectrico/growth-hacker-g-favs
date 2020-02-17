@@ -10,8 +10,8 @@ const Source = ({ sources, changeSource }) => {
   };
   return (
     <div className="container py-5">
-      <div className="row h-100 w-100" style={{ minHeight: '90vh' }}>
-        <div className="col-12 col-lg-7">
+      <div className="row h-100 w-100 justify-content-between" style={{ minHeight: '90vh' }}>
+        <div className="col-12 col-lg-5">
           <img className="w-100" src="/ill-1.svg" alt="illustration" />
         </div>
         <div className="col-12 col-lg-5 d-flex flex-column">

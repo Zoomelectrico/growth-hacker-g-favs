@@ -4,14 +4,15 @@ import { useQuery } from '@apollo/client';
 import { GET_FIELDS } from '../graphql/queries';
 import uuid from '../lib/uuid';
 
-const Filter = ({ type, getSort }) => {
-  const { data, loading, error } = useQuery(GET_FIELDS);
+const Filter = ({ type, getSort, getSearch }) => {
+  const { data, loading } = useQuery(GET_FIELDS);
   const [fields, setFields] = React.useState([]);
   const [field, setField] = React.useState(null);
   const [searchValue, setSearchValue] = React.useState('');
   const search = e => {
     e.preventDefault();
-    // TODO: Search!
+    const [_field] = fields.filter(f => f.id === field);
+    getSearch(e, _field.name, searchValue);
   };
 
   const sort = (e, _field, up) => {
@@ -30,6 +31,12 @@ const Filter = ({ type, getSort }) => {
   React.useEffect(() => {
     if (data) {
       const keys = Object.keys(data);
+      if (String(type).toLowerCase() === 'favorites') {
+        const filteredFields = [...new Set(keys.map(key => data[key].fields.map(({ name }) => name)).flat(Infinity))]
+          .map(name => ({ name, id: uuid() }))
+          .filter(x => x.name !== '_id' && x.name !== 'photo');
+        setFields(filteredFields);
+      }
       keys.forEach(key => {
         if (type.includes(key)) {
           setFields(
@@ -51,7 +58,7 @@ const Filter = ({ type, getSort }) => {
             {field && (
               <div className="form-group">
                 <label htmlFor="search-field">Search</label>
-                <div className="input-group mb-3">
+                <div className="input-group mb-4">
                   <input
                     type="text"
                     name="search-field"
@@ -108,6 +115,7 @@ const Filter = ({ type, getSort }) => {
 Filter.propTypes = {
   type: PropTypes.string.isRequired,
   getSort: PropTypes.func.isRequired,
+  getSearch: PropTypes.func.isRequired,
 };
 
 export default Filter;

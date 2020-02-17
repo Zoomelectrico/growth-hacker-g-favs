@@ -42,6 +42,20 @@ const Items = ({ items, title, pageInfo, page, link, auth, add, remove, fav }) =
     });
     setItems(__items);
   };
+
+  const getSearch = (e, field, search) => {
+    e.preventDefault();
+    const regex = new RegExp(search, 'gi');
+    setItems(
+      [...items].filter(item => {
+        if (field === 'brand') {
+          return regex.test(item[field].name);
+        }
+        return regex.test(String(item[field]));
+      })
+    );
+  };
+
   return (
     <div className="container py-5">
       <div className="row">
@@ -52,7 +66,7 @@ const Items = ({ items, title, pageInfo, page, link, auth, add, remove, fav }) =
       </div>
       <div className="row">
         <div className="col-12 col-lg-3">
-          <Filter type={String(title).toLowerCase()} getSort={getSort} />
+          <Filter type={String(title).toLowerCase()} getSort={getSort} getSearch={getSearch} />
         </div>
         <div className="col-12 col-lg-9">
           <div className="row">

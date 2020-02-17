@@ -22,6 +22,14 @@ const App = ({ Component, pageProps }) => (
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
         crossOrigin="anonymous"
       />
+      <style global jsx>
+        {`
+          @import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
+          * {
+            font-family: 'Nunito', sans-serif;
+          }
+        `}
+      </style>
     </Head>
     <Layout>
       <Component {...pageProps} />
