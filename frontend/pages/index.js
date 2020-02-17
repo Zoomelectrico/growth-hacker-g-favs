@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { Sources } from '../components';
 import AppContext from '../AppContext';
+import { endpoint } from '../config';
 
 const Home = ({ success, sources }) => {
   const { setSources, setCurrentSource } = React.useContext(AppContext);
@@ -30,7 +31,7 @@ const Home = ({ success, sources }) => {
 Home.getInitialProps = async () => {
   const {
     data: { success, sources },
-  } = await axios.get('http://localhost:3000/sources');
+  } = await axios.get(`${endpoint}/sources`);
   return { success, sources };
 };
 
