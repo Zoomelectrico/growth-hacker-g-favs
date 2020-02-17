@@ -29,14 +29,18 @@ const Layout = ({ children }) => {
   }, [currentSource]);
   React.useEffect(() => {
     const fetcher = async () => {
-      const { data } = await axios.get(`${endpoint}/me`, {
-        withCredentials: true,
-      });
-      if (!data.success) {
-        return console.log(`err: ${data.err}`);
+      try {
+        const { data } = await axios.get(`${endpoint}/me`, {
+          withCredentials: true,
+        });
+        if (!data.success) {
+          return console.log(`err: ${data.err}`);
+        }
+        setToken(data.token);
+        setUser(data.user);
+      } catch (err) {
+        console.log(err);
       }
-      setToken(data.token);
-      setUser(data.user);
     };
     fetcher();
   }, []);
