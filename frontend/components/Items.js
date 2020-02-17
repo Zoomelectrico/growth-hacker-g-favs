@@ -22,18 +22,25 @@ const Items = ({ items, title, pageInfo, page, link, auth, add, remove, fav }) =
     }
   }, [fav, items]);
   const getSort = (field, up) => {
-    const __items = items.sort((a, b) => {
-      if (up) {
-        if (typeof a[field] === 'number') {
-          return Number(b[field]) - Number(a[field]);
+    const __items = [...items].sort((a, b) => {
+      if (field === 'brand') {
+        if (up) {
+          return a[field].name > b[field].name ? -1 : 1;
         }
-        return b[field] > a[field] ? 1 : -1;
+        return a[field].name > b[field].name ? 1 : -1;
       }
       if (typeof a[field] === 'number') {
-        return Number(b[field]) - Number(a[field]);
+        if (up) {
+          return Number(b[field]) - Number(a[field]);
+        }
+        return Number(a[field]) - Number(b[field]);
       }
-      return b[field] < a[field] ? 1 : -1;
+      if (up) {
+        return a[field] > b[field] ? -1 : 1;
+      }
+      return a[field] > b[field] ? 1 : -1;
     });
+    setItems(__items);
   };
   return (
     <div className="container py-5">

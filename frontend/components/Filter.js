@@ -9,7 +9,6 @@ const Filter = ({ type, getSort }) => {
   const [fields, setFields] = React.useState([]);
   const [field, setField] = React.useState(null);
   const [searchValue, setSearchValue] = React.useState('');
-  const [isUp, setUp] = React.useState(false);
   const search = e => {
     e.preventDefault();
     // TODO: Search!
@@ -73,20 +72,26 @@ const Filter = ({ type, getSort }) => {
             <ul className="list-group list-group-flush">
               {fields.map(_field => (
                 <li className="list-group-item" key={_field.id}>
-                  <div className="btn-group w-100">
+                  <div className="d-flex">
                     <button
                       type="button"
-                      className="btn bg-transparent h-100 w-100 p-0 text-left"
+                      className="btn bg-transparent h-100 p-0 text-left mr-auto"
                       onClick={e => onClick(e, _field.id)}
                     >
                       {_field.name}
                     </button>
                     <button
                       type="button"
-                      className="d-flex justify-content-end my-auto btn bg-transparent h-100 w-100 p-0 text-left"
-                      onClick={e => sort(e, _field.name, isUp)}
+                      className="btn bg-transparent h-100 p-0 text-center"
+                      onClick={e => sort(e, _field.name, true)}
                     >
-                      <i className="fas fa-arrow-up mr-2" />
+                      <i className="fas fa-arrow-up" />
+                    </button>
+                    <button
+                      type="button"
+                      className="btn bg-transparent h-100 p-0 text-center"
+                      onClick={e => sort(e, _field.name, false)}
+                    >
                       <i className="fas fa-arrow-down" />
                     </button>
                   </div>
