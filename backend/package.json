@@ -16,7 +16,7 @@
   "author": "Jose Robeto Quevedo <jose@avilatek.co>",
   "license": "MIT",
   "dependencies": {
-    "apollo-server-express": "^2.10.1",
+    "apollo-server-express": "^2.14.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
