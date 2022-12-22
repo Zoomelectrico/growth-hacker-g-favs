@@ -28,7 +28,7 @@
     "graphql-compose-pagination": "^6.0.3",
     "graphql-middleware": "^4.0.2",
     "graphql-tools": "^4.0.6",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.9.1",
     "prettier": "^1.19.1",
     "slugs": "^0.1.3"
